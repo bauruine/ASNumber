@@ -1,0 +1,18 @@
+{
+	"manifest_version": 2,
+	"name": "Show Server IP / Loaded JS/CSS in Popup",
+	"version": "1.4",
+	"description": "Show the Server IP without interacting with external Sites. If you are behind a proxy it will only show the IP of the Proxy! - Based on https://addons.mozilla.org/fr/firefox/addon/show-server-ip/ thanks  BongoKarl101010",
+	"icons": {
+		"64": "icons/ip.png"
+	},  
+	"page_action": {		
+		"default_icon":  "icons/ip.png",
+		"default_title": "Show IP and Loaded CSS/JS",
+		"default_popup": "popup.html"
+	},
+	"permissions": ["tabs","webRequest","<all_urls>"],
+	"background": {
+		"scripts": ["background.js"]
+	}
+}
