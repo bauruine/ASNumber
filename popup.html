@@ -29,8 +29,8 @@ img{ width:18px; cursor:pointer; margin-left:5px;}
 .outer{ margin: 15px 15px; padding:0;}
 .header{ font-size:16px; border-bottom:1px solid #000;}
 .header .txt{font-size:24px;}
-.header #ip a{display: inline-block;}
-.header #ip img.copy{ float:right}
+.header #asn a{display: inline-block;}
+.header #asn img.copy{ float:left}
 
 </style>
 
@@ -39,20 +39,15 @@ img{ width:18px; cursor:pointer; margin-left:5px;}
   <div class="outer">
   <div style="float:right;" id="version"></div>
 	<div class="header">
-		<span class="txt">IP : </span>
-		<span id="ip"></span>
-		<img src="icons/whois.png">
+		<span class="txt">ASN: </br></span>
+		<span id="asn"></span>
 	</div>	
   	
 	
 	<div class="flex">
 		<div class="col">
-			<h3>CSS</h3>
-			<div id="css"></div>
-		</div>
-		<div class="col">
-			<h3>JS</h3>
-			<div id="js"></div>
+			<h3>ASN</h3>
+			<div id="asns"></div>
 		</div>
 		<div class="col">
 			<h3>IP's</h3>

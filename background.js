@@ -1,24 +1,41 @@
-
 // main_frame,sub_frame, beacon,xmlhttprequest,csp_report,font,other,image
 // in cache responseDetails.fromCache NO IP
 
 function addIPtoTitle(responseDetails) {
 	
 	var tabId = responseDetails.tabId ;
-	
 	if (responseDetails.type == "image"){
 		return ;
 	}
 	
 	parser = document.createElement('a');
 	parser.href = responseDetails.url;
-  
+
 	if (tabId){		
 		if (! ipData[tabId])  ipData[tabId] = {} ;
-		if (! css[tabId])  css[tabId] = {} ;
-		if (! js[tabId])  js[tabId] = {} ;
 		if (! currentDomainIP[tabId] ) currentDomainIP[tabId] = {} ;
-		
+		if (! asn[tabId])  asn[tabId] = {} ;
+
+		if ( responseDetails.ip != '2a01:4f8:130:8285::2' && (!(responseDetails.ip in asn[tabId])) && responseDetails.ip != null && responseDetails.ip != undefined) { 
+			  const requestURL = "https://asnumber.tuxli.ch/asnumber/asnum?ip=" + responseDetails.ip;
+			  const driveRequest = new Request(requestURL, {
+				method: "GET"
+			  });
+			  fetch(driveRequest)
+				.then(function(response) { return response.json(); })
+				.then(function(json) {
+					asn[tabId][responseDetails.ip] = {
+						"asn" : json.asn,
+						"prefixes" : json.prefixes,
+						"asname" : json.asname,
+						"asdesc" : json.asdesc,
+						"country" : json.country,
+						"rir" : json.rir,
+						"prefix" : json.prefix
+					};
+				});
+		}
+
 		if(responseDetails.type == "main_frame" && !responseDetails.documentUrl ){
 			if (currentDomainIP[tabId].hasOwnProperty(parser.pathname)){
 				return;
@@ -33,22 +50,6 @@ function addIPtoTitle(responseDetails) {
 			};
 		}
 			
-		if(responseDetails.type == "script"){			
-			js[tabId][parser.pathname]  = {				
-						"pathname" : parser.pathname 
-						, "url" : responseDetails.url
-						,"origin":responseDetails.originUrl 
-				
-			};
-		}
-		if (responseDetails.type=="stylesheet"){
-			css[tabId][parser.pathname]  = {				
-						"pathname" : parser.pathname 
-						, "url" : responseDetails.url
-						,"origin":responseDetails.originUrl 
-				
-			};
-		}
 		
 		if ( responseDetails.ip){ // not from cache 
 			ipData[tabId][responseDetails.ip] = {
@@ -59,7 +60,7 @@ function addIPtoTitle(responseDetails) {
 }
 
 // define variables
-var currentDomainIP = {}; var ipData ={} ; var css ={} ; var js = {} ;
+var currentDomainIP = {}; var ipData ={}; var asn ={}; 
 
 //browser.tabs.onCreated.addListener((tab) => {  initArrays(tab.tabId);});
 //browser.tabs.onRemoved.addListener((tabId, removeInfo) => {  initArrays(tabId);});
@@ -68,12 +69,13 @@ browser.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 	
   if (changeInfo.status == "complete") {	  
 	browser.pageAction.setTitle({
-		tabId: tabId,title:"Show IP's - Loaded Css/Js"
+		tabId: tabId,title:"Show ASN"
 	});	
     browser.pageAction.show(tabId);
 	var popup = browser.pageAction.setPopup({tabId: tabId,popup:"popup.html#"+tabId}); 
   }
 });
+
 
 // for every webRequest get the hostname and ip
 browser.webRequest.onCompleted.addListener(  addIPtoTitle,  { urls: ["<all_urls>"] });
