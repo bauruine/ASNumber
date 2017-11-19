@@ -20,23 +20,53 @@ function nsGhipUtil_load(){
 	var ips = chrome.extension.getBackgroundPage().ipData[tabId]  ;
 	for (var i in ips ){
 		var a = document.createElement('div');
-		a.title = ips[i].url;
-		a.innerHTML = ips[i].hostname + ' ('+ips[i].type+') : ' + i;
+                var text = document.createTextNode(ips[i].hostname + ' ('+ips[i].type+') : ' + i);
+		a.appendChild(text)
 		document.querySelector('#ips').appendChild(a);
 	}
 	
 	
 	for (var i in asn ){
-		var a = document.createElement('a');
-		var listItem = document.createElement('div');
-		listItem.innerHTML = 'AS' + asn[i].asn + '</br>';
-		listItem.innerHTML += 'AS name: ' + asn[i].asname + '</br>';
-		listItem.innerHTML += 'AS desc: ' +asn[i].asdesc + '</br>';
-		listItem.innerHTML += 'Country: ' + asn[i].country + '</br>';
-		listItem.innerHTML += 'RIR: ' + asn[i].rir + '</br>';
-		listItem.innerHTML += 'Prefix: ' + asn[i].prefix + '</br></br>';
+		var docFragment = document.createDocumentFragment();
+		var text = document.createTextNode("AS: " + asn[i].asn);
+		docFragment.appendChild(text);
 
-		document.querySelector('#asns').appendChild(listItem);
+		var br = document.createElement('BR');
+		docFragment.appendChild(br);
+		var text_0 = document.createTextNode("Prefixes: " + asn[i].prefixes);
+		docFragment.appendChild(text_0);
+
+		var br_0 = document.createElement('BR');
+		docFragment.appendChild(br_0);
+		var text_1 = document.createTextNode("AS name: " + asn[i].asname);
+		docFragment.appendChild(text_1);
+
+		var br_1 = document.createElement('BR');
+		docFragment.appendChild(br_1);
+		var text_2 = document.createTextNode("AS desc: " + asn[i].asdesc);
+		docFragment.appendChild(text_2);
+
+		var br_2 = document.createElement('BR');
+		docFragment.appendChild(br_2);
+		var text_3 = document.createTextNode("Country: " + asn[i].country);
+		docFragment.appendChild(text_3);
+
+		var br_3 = document.createElement('BR');
+		docFragment.appendChild(br_3);
+		var text_4 = document.createTextNode("RIR: " + asn[i].rir);
+		docFragment.appendChild(text_4);
+
+		var br_4 = document.createElement('BR');
+		docFragment.appendChild(br_4);
+		var text_5 = document.createTextNode("Prefix: " + asn[i].prefix);
+		docFragment.appendChild(text_5);
+
+		var br_5 = document.createElement('BR');
+		docFragment.appendChild(br_5);
+		var br_6 = document.createElement('BR');
+		docFragment.appendChild(br_6);
+
+		document.querySelector('#asns').appendChild(docFragment);
 	}
 	
 }
