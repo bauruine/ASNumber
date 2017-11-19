@@ -16,7 +16,7 @@ function addIPtoTitle(responseDetails) {
 		if (! currentDomainIP[tabId] ) currentDomainIP[tabId] = {} ;
 		if (! asn[tabId])  asn[tabId] = {} ;
 
-		if ( responseDetails.ip != '2a01:4f8:130:8285::2' && (!(responseDetails.ip in asn[tabId])) && responseDetails.ip != null && responseDetails.ip != undefined) { 
+		if ((responseDetails.ip != '2a01:4f8:130:8285::2' || responseDetails.ip != '213.239.205.247') && (!(responseDetails.ip in asn[tabId])) && responseDetails.ip != null && responseDetails.ip != undefined) { 
 			  const requestURL = "https://asnumber.tuxli.ch/asnumber/asnum?ip=" + responseDetails.ip;
 			  const driveRequest = new Request(requestURL, {
 				method: "GET"
