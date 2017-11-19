@@ -3,19 +3,25 @@ function nsGhipUtil_load(){
 	var tabId = parseInt(window.location.hash.replace('#','')) ;
 	
 	var asn = chrome.extension.getBackgroundPage().asn[tabId]  ;
+
+	var dupeas = {};
+
 	for (var i in asn ){
-		var a = document.createElement('a');
-		var br = document.createElement('br');
-		a.href = 'https://bgp.he.net/AS'+asn[i].asn;
-		a.text = "AS" + asn[i].asn + ' ' + asn[i].asname;
-		var im = document.createElement('img');
-		im.src = "icons/clipboard.png";
-		im.data = {asn : asn[i].asn};
-		im.className="copy";
-		im.onclick = copyToClipboard ;
-		document.querySelector('#asn').appendChild(im);
-		document.querySelector('#asn').appendChild(a);
-		document.querySelector('#asn').appendChild(br);
+		if (!(asn[i].asn in dupeas)) {
+			dupeas[asn[i].asn] = 1;
+			var a = document.createElement('a');
+			var br = document.createElement('br');
+			a.href = 'https://bgp.he.net/AS'+asn[i].asn;
+			a.text = "AS" + asn[i].asn + ' ' + asn[i].asname;
+			var im = document.createElement('img');
+			im.src = "icons/clipboard.png";
+			im.data = {asn : asn[i].asn};
+			im.className="copy";
+			im.onclick = copyToClipboard ;
+			document.querySelector('#asn').appendChild(im);
+			document.querySelector('#asn').appendChild(a);
+			document.querySelector('#asn').appendChild(br);
+		}
 	}
 	var ips = chrome.extension.getBackgroundPage().ipData[tabId]  ;
 	for (var i in ips ){
