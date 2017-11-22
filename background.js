@@ -7,7 +7,7 @@ function addIPtoTitle(responseDetails) {
 	if (responseDetails.type == "image"){
 		return ;
 	}
-	
+
 	parser = document.createElement('a');
 	parser.href = responseDetails.url;
 
@@ -15,6 +15,7 @@ function addIPtoTitle(responseDetails) {
 		if (! ipData[tabId])  ipData[tabId] = {} ;
 		if (! currentDomainIP[tabId] ) currentDomainIP[tabId] = {} ;
 		if (! asn[tabId])  asn[tabId] = {} ;
+		if (! prefix[tabId]) prefix[tabId] = {};
 
 		if ((responseDetails.ip != '2a01:4f8:130:8285::2' || responseDetails.ip != '213.239.205.247') && (!(responseDetails.ip in asn[tabId])) && responseDetails.ip != null && responseDetails.ip != undefined) { 
 			  const requestURL = "https://asnumber.tuxli.ch/asnumber/asnum?ip=" + responseDetails.ip;
@@ -24,7 +25,7 @@ function addIPtoTitle(responseDetails) {
 			  fetch(driveRequest)
 				.then(function(response) { return response.json(); })
 				.then(function(json) {
-					asn[tabId][responseDetails.ip] = {
+					asn[tabId][json.asn] = {
 						"asn" : json.asn,
 						"prefixes" : json.prefixes,
 						"asname" : json.asname,
@@ -33,6 +34,13 @@ function addIPtoTitle(responseDetails) {
 						"rir" : json.rir,
 						"prefix" : json.prefix
 					};
+					if (! prefix[tabId][json.asn]) {
+						prefix[tabId][json.asn] = [json.prefix]
+					}
+					else {
+						if (! prefix[tabId][json.asn].includes(json.prefix))
+						prefix[tabId][json.asn].push(json.prefix)
+					}
 				});
 		}
 
@@ -60,7 +68,7 @@ function addIPtoTitle(responseDetails) {
 }
 
 // define variables
-var currentDomainIP = {}; var ipData ={}; var asn ={}; 
+var currentDomainIP = {}; var ipData ={}; var asn ={}; var prefix = {};
 
 //browser.tabs.onCreated.addListener((tab) => {  initArrays(tab.tabId);});
 //browser.tabs.onRemoved.addListener((tabId, removeInfo) => {  initArrays(tabId);});

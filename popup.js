@@ -4,24 +4,19 @@ function nsGhipUtil_load(){
 	
 	var asn = chrome.extension.getBackgroundPage().asn[tabId]  ;
 
-	var dupeas = {};
-
 	for (var i in asn ){
-		if (!(asn[i].asn in dupeas)) {
-			dupeas[asn[i].asn] = 1;
-			var a = document.createElement('a');
-			var br = document.createElement('br');
-			a.href = 'https://bgp.he.net/AS'+asn[i].asn;
-			a.text = "AS" + asn[i].asn + ' ' + asn[i].asname;
-			var im = document.createElement('img');
-			im.src = "icons/clipboard.png";
-			im.data = {asn : asn[i].asn};
-			im.className="copy";
-			im.onclick = copyToClipboard ;
-			document.querySelector('#asn').appendChild(im);
-			document.querySelector('#asn').appendChild(a);
-			document.querySelector('#asn').appendChild(br);
-		}
+		var a = document.createElement('a');
+		var br = document.createElement('br');
+		a.href = 'https://bgp.he.net/AS'+asn[i].asn;
+		a.text = "AS" + asn[i].asn + ' ' + asn[i].asname;
+		var im = document.createElement('img');
+		im.src = "icons/clipboard.png";
+		im.data = {asn : asn[i].asn};
+		im.className="copy";
+		im.onclick = copyToClipboard ;
+		document.querySelector('#asn').appendChild(im);
+		document.querySelector('#asn').appendChild(a);
+		document.querySelector('#asn').appendChild(br);
 	}
 	var ips = chrome.extension.getBackgroundPage().ipData[tabId]  ;
 	for (var i in ips ){
@@ -32,6 +27,7 @@ function nsGhipUtil_load(){
 	}
 	
 	
+	var prefix = chrome.extension.getBackgroundPage().prefix[tabId]  ;
 	for (var i in asn ){
 		var docFragment = document.createDocumentFragment();
 		var text = document.createTextNode("AS: " + asn[i].asn);
@@ -64,11 +60,12 @@ function nsGhipUtil_load(){
 
 		var br_4 = document.createElement('BR');
 		docFragment.appendChild(br_4);
-		var text_5 = document.createTextNode("Prefix: " + asn[i].prefix);
-		docFragment.appendChild(text_5);
-
-		var br_5 = document.createElement('BR');
-		docFragment.appendChild(br_5);
+		for (var p in prefix[asn[i].asn]){
+			var text_5 = document.createTextNode("Prefix: " + prefix[asn[i].asn][p]);
+			docFragment.appendChild(text_5);
+			var br_5 = document.createElement('BR');
+			docFragment.appendChild(br_5);
+		}
 		var br_6 = document.createElement('BR');
 		docFragment.appendChild(br_6);
 
