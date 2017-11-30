@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "Show ASNumber",
-	"version": "0.1",
+	"version": "0.2.1",
 	"description": "Show information about the source AS Number of all visted sites. Based on https://addons.mozilla.org/de/firefox/addon/show-server-ip-in-popup/",
 	"icons": {
 		"64": "icons/ip.png"
