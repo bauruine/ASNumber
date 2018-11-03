@@ -81,17 +81,17 @@ var currentDomainIP = {}; var ipData ={}; var asn ={}; var prefix = {};
 //browser.tabs.onCreated.addListener((tab) => {  initArrays(tab.tabId);});
 //browser.tabs.onRemoved.addListener((tabId, removeInfo) => {  initArrays(tabId);});
 //browser.tabs.onActivated.addListener((activeInfo) => {  if (!newReq[activeInfo.tabId]) {    initArrays(activeInfo.tabId);  }});
-browser.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 	
   if (changeInfo.status == "complete") {	  
-	browser.pageAction.setTitle({
+	chrome.pageAction.setTitle({
 		tabId: tabId,title:"Show ASN"
 	});	
-    browser.pageAction.show(tabId);
-	var popup = browser.pageAction.setPopup({tabId: tabId,popup:"popup.html#"+tabId}); 
+    chrome.pageAction.show(tabId);
+	var popup = chrome.pageAction.setPopup({tabId: tabId,popup:"popup.html#"+tabId}); 
   }
 });
 
 
 // for every webRequest get the hostname and ip
-browser.webRequest.onCompleted.addListener(  addIPtoTitle,  { urls: ["<all_urls>"] });
+chrome.webRequest.onCompleted.addListener(  addIPtoTitle,  { urls: ["<all_urls>"] });
