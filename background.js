@@ -17,6 +17,10 @@ function addIPtoTitle(responseDetails) {
 		if (! asn[tabId])  asn[tabId] = {} ;
 		if (! prefix[tabId]) prefix[tabId] = {};
 
+		if(responseDetails.type == "main_frame"){
+			asn[tabId] = {} ;
+		}
+
 		if (!(tabId == -1) && (!(responseDetails.ip in asn[tabId])) && responseDetails.ip != null && responseDetails.ip != undefined) { 
 			  const requestURL = "https://asnumber.tuxli.ch/asnumber/asnum?ip=" + responseDetails.ip;
 			  const driveRequest = new Request(requestURL, {
