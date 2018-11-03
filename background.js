@@ -19,6 +19,10 @@ function addIPtoTitle(responseDetails) {
 
 		if(responseDetails.type == "main_frame"){
 			asn[tabId] = {} ;
+			ipData[tabId] = {};
+			currentDomainIP[tabId] = {} ;
+			prefix[tabId] = {};
+			ipData[tabId] = {} ;
 		}
 
 		if (!(tabId == -1) && (!(responseDetails.ip in asn[tabId])) && responseDetails.ip != null && responseDetails.ip != undefined) { 
