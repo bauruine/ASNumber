@@ -13,14 +13,12 @@ function addIPtoTitle(responseDetails) {
 
 	if (tabId){		
 		if (! ipData[tabId])  ipData[tabId] = {} ;
-		if (! currentDomainIP[tabId] ) currentDomainIP[tabId] = {} ;
 		if (! asn[tabId])  asn[tabId] = {} ;
 		if (! prefix[tabId]) prefix[tabId] = {};
 
 		if(responseDetails.type == "main_frame"){
 			asn[tabId] = {} ;
 			ipData[tabId] = {};
-			currentDomainIP[tabId] = {} ;
 			prefix[tabId] = {};
 			ipData[tabId] = {} ;
 		}
@@ -52,21 +50,6 @@ function addIPtoTitle(responseDetails) {
 				});
 		}
 
-		if(responseDetails.type == "main_frame" && !responseDetails.documentUrl ){
-			if (currentDomainIP[tabId].hasOwnProperty(parser.pathname)){
-				return;
-			}
-			currentDomainIP[tabId][parser.pathname]  = {				
-						"pathname" : parser.pathname 
-						, "hostname" : parser.hostname 
-						, "url" : responseDetails.url
-						,"origin":responseDetails.originUrl 
-						,"ip" : responseDetails.ip
-				
-			};
-		}
-			
-		
 		if ( responseDetails.ip){ // not from cache 
 			ipData[tabId][responseDetails.ip] = {
 				"type" : responseDetails.type
@@ -76,7 +59,7 @@ function addIPtoTitle(responseDetails) {
 }
 
 // define variables
-var currentDomainIP = {}; var ipData ={}; var asn ={}; var prefix = {};
+var ipData ={}; var asn ={}; var prefix = {};
 
 //browser.tabs.onCreated.addListener((tab) => {  initArrays(tab.tabId);});
 //browser.tabs.onRemoved.addListener((tabId, removeInfo) => {  initArrays(tabId);});
