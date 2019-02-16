@@ -18,15 +18,9 @@ function nsGhipUtil_load(){
 		document.querySelector('#asn').appendChild(a);
 		document.querySelector('#asn').appendChild(br);
 	}
+	
+	
 	var ips = chrome.extension.getBackgroundPage().ipData[tabId]  ;
-	for (var i in ips ){
-		var a = document.createElement('div');
-                var text = document.createTextNode(ips[i].hostname + ' ('+ips[i].type+') : ' + i);
-		a.appendChild(text)
-		document.querySelector('#ips').appendChild(a);
-	}
-	
-	
 	var prefix = chrome.extension.getBackgroundPage().prefix[tabId]  ;
 	for (var i in asn ){
 		var docFragment = document.createDocumentFragment();
@@ -68,8 +62,16 @@ function nsGhipUtil_load(){
 		}
 		var br_6 = document.createElement('BR');
 		docFragment.appendChild(br_6);
+		var br_7 = document.createElement('div')
+		docFragment.appendChild(br_7);
 
 		document.querySelector('#asns').appendChild(docFragment);
+		for (var count in ips[asn[i].asn] ){
+			var a = document.createElement('div');
+			var text = document.createTextNode(ips[asn[i].asn][count].hostname + ' ('+ips[asn[i].asn][count]['type'].join(", ")+') : ' + count);
+			a.appendChild(text)
+			document.querySelector('#ips').appendChild(a);
+		}
 	}
 	
 }

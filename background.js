@@ -8,8 +8,6 @@ function addIPtoTitle(responseDetails) {
 		return ;
 	}
 
-	parser = document.createElement('a');
-	parser.href = responseDetails.url;
 
 	if (tabId){		
 		if (! ipData[tabId])  ipData[tabId] = {} ;
@@ -25,8 +23,8 @@ function addIPtoTitle(responseDetails) {
 			processedIps[tabId] = {} ;
 		}
 
-		if (!(tabId == -1) && (!(responseDetails.ip in processedIps[tabId])) && responseDetails.ip != null && responseDetails.ip != undefined) { 
-			  processedIps[tabId][responseDetails.ip] = true;
+		if (!(tabId == -1) && (!(responseDetails.ip in processedIps[tabId])) && responseDetails.ip) { 
+		      processedIps[tabId][responseDetails.ip] = true;
 			  const requestURL = "https://asnumber.tuxli.ch/asnumber/asnum?ip=" + responseDetails.ip;
 			  const driveRequest = new Request(requestURL, {
 				method: "GET"
@@ -41,7 +39,6 @@ function addIPtoTitle(responseDetails) {
 						"asdesc" : json.asdesc,
 						"country" : json.country,
 						"rir" : json.rir,
-						"prefix" : json.prefix
 					};
 					if (! prefix[tabId][json.asn]) {
 						prefix[tabId][json.asn] = [json.prefix]
@@ -50,15 +47,37 @@ function addIPtoTitle(responseDetails) {
 						if (! prefix[tabId][json.asn].includes(json.prefix))
 						prefix[tabId][json.asn].push(json.prefix)
 					}
+					processedIps[tabId][responseDetails.ip] = json.asn;
+					add_ips(responseDetails, processedIps, tabId);
 				});
 		}
-
-		if ( responseDetails.ip){ // not from cache 
-			ipData[tabId][responseDetails.ip] = {
-				"type" : responseDetails.type
-			,"url":responseDetails.url ,"hostname":parser.hostname } ;
+		else if (tabId != -1 && responseDetails.ip) {
+			add_ips(responseDetails, processedIps, tabId);
 		}
+
   }
+}
+function add_ips(responseDetails, processedIps, tabId) {
+	if ( responseDetails.ip){ // not from cache 
+		var reqAsn = processedIps[tabId][responseDetails.ip];
+        parser = document.createElement('a');
+        parser.href = responseDetails.url;
+		hostname = parser.hostname
+		if (! ipData[tabId][reqAsn])  ipData[tabId][reqAsn] = {} ;
+		if (! ipData[tabId][reqAsn][responseDetails.ip]) {
+			console.log("adding " + responseDetails.ip + " with hostname: " + hostname + " to asn: " + reqAsn + " and tabId" + tabId)
+			ipData[tabId][reqAsn][responseDetails.ip] = {
+				"type": [responseDetails.type],
+				"hostname": hostname
+			}
+		}
+		else {
+			if (! ipData[tabId][reqAsn][responseDetails.ip]['type'].includes(responseDetails.type)) {
+				console.log("adding " + responseDetails.ip + " with hostname: " + hostname + " to asn: " + reqAsn + " and type " + responseDetails.type)
+				ipData[tabId][reqAsn][responseDetails.ip]['type'].push(responseDetails.type)
+			}
+		}
+	}
 }
 
 // define variables
