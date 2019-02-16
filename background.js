@@ -15,15 +15,18 @@ function addIPtoTitle(responseDetails) {
 		if (! ipData[tabId])  ipData[tabId] = {} ;
 		if (! asn[tabId])  asn[tabId] = {} ;
 		if (! prefix[tabId]) prefix[tabId] = {};
+		if (! processedIps[tabId]) processedIps[tabId] = {};
 
 		if(responseDetails.type == "main_frame"){
 			asn[tabId] = {} ;
 			ipData[tabId] = {};
 			prefix[tabId] = {};
 			ipData[tabId] = {} ;
+			processedIps[tabId] = {} ;
 		}
 
-		if (!(tabId == -1) && (!(responseDetails.ip in asn[tabId])) && responseDetails.ip != null && responseDetails.ip != undefined) { 
+		if (!(tabId == -1) && (!(responseDetails.ip in processedIps[tabId])) && responseDetails.ip != null && responseDetails.ip != undefined) { 
+			  processedIps[tabId][responseDetails.ip] = true;
 			  const requestURL = "https://asnumber.tuxli.ch/asnumber/asnum?ip=" + responseDetails.ip;
 			  const driveRequest = new Request(requestURL, {
 				method: "GET"
@@ -59,7 +62,7 @@ function addIPtoTitle(responseDetails) {
 }
 
 // define variables
-var ipData ={}; var asn ={}; var prefix = {};
+var ipData ={}; var asn ={}; var prefix = {}; var processedIps = {};
 
 //browser.tabs.onCreated.addListener((tab) => {  initArrays(tab.tabId);});
 //browser.tabs.onRemoved.addListener((tabId, removeInfo) => {  initArrays(tabId);});
