@@ -5,8 +5,8 @@ function nsGhipUtil_load(){
 	var asn = chrome.extension.getBackgroundPage().asn[tabId]  ;
 
 	for (var i in asn ){
+		var li = document.createElement('li');
 		var a = document.createElement('a');
-		var br = document.createElement('br');
 		a.href = 'https://bgp.he.net/AS'+asn[i].asn;
 		a.text = "AS" + asn[i].asn + ' ' + asn[i].asname;
 		var im = document.createElement('img');
@@ -14,68 +14,63 @@ function nsGhipUtil_load(){
 		im.data = {asn : asn[i].asn};
 		im.className="copy";
 		im.onclick = copyToClipboard ;
-		document.querySelector('#asn').appendChild(im);
-		document.querySelector('#asn').appendChild(a);
-		document.querySelector('#asn').appendChild(br);
+		a.insertBefore(im, a.firstChild);
+		li.appendChild(a);
+		document.querySelector('ul#asn').appendChild(li);
 	}
 	
 	
 	var ips = chrome.extension.getBackgroundPage().ipData[tabId]  ;
 	var prefix = chrome.extension.getBackgroundPage().prefix[tabId]  ;
 	for (var i in asn ){
-		var docFragment = document.createDocumentFragment();
-		var text = document.createTextNode("AS: " + asn[i].asn);
-		docFragment.appendChild(text);
 
-		var br = document.createElement('BR');
-		docFragment.appendChild(br);
-		var text_0 = document.createTextNode("Prefixes: " + asn[i].prefixes);
-		docFragment.appendChild(text_0);
+		var li = document.createElement('li');
+		var table = document.createElement('table');
+		var tbody = document.createElement('tbody');
 
-		var br_0 = document.createElement('BR');
-		docFragment.appendChild(br_0);
-		var text_1 = document.createTextNode("AS name: " + asn[i].asname);
-		docFragment.appendChild(text_1);
+		var as_id = createRow("AS", asn[i].asn);
+		var prefixes = createRow("Prefixes", asn[i].prefixes);
+		var as_name = createRow("AS Name", asn[i].asname);
+		var as_desc = createRow("AS Desc", asn[i].asdesc);
+		var country = createRow("Country", asn[i].country);
+		var rir = createRow("RIR", asn[i].rir);
 
-		var br_1 = document.createElement('BR');
-		docFragment.appendChild(br_1);
-		var text_2 = document.createTextNode("AS desc: " + asn[i].asdesc);
-		docFragment.appendChild(text_2);
+		tbody.append(as_id, prefixes, as_name, as_desc, country, rir);
+		table.appendChild(tbody);
 
-		var br_2 = document.createElement('BR');
-		docFragment.appendChild(br_2);
-		var text_3 = document.createTextNode("Country: " + asn[i].country);
-		docFragment.appendChild(text_3);
-
-		var br_3 = document.createElement('BR');
-		docFragment.appendChild(br_3);
-		var text_4 = document.createTextNode("RIR: " + asn[i].rir);
-		docFragment.appendChild(text_4);
-
-		var br_4 = document.createElement('BR');
-		docFragment.appendChild(br_4);
 		for (var p in prefix[asn[i].asn]){
-			var text_5 = document.createTextNode("Prefix: " + prefix[asn[i].asn][p]);
-			docFragment.appendChild(text_5);
-			var br_5 = document.createElement('BR');
-			docFragment.appendChild(br_5);
+			var prefix_row = createRow("Prefix", prefix[asn[i].asn][p]);
+			tbody.appendChild(prefix_row);
 		}
-		var br_6 = document.createElement('BR');
-		docFragment.appendChild(br_6);
-		var br_7 = document.createElement('div')
-		docFragment.appendChild(br_7);
 
-		document.querySelector('#asns').appendChild(docFragment);
+		li.appendChild(table);
+		document.querySelector('ul#asns').appendChild(li);
+
 		for (var count in ips[asn[i].asn] ){
+			var li = document.createElement('li');
 			var a = document.createElement('div');
 			var text = document.createTextNode(ips[asn[i].asn][count].hostname + ' ('+ips[asn[i].asn][count]['type'].join(", ")+') : ' + count);
-			a.appendChild(text)
-			document.querySelector('#ips').appendChild(a);
+			a.appendChild(text);
+
+			li.appendChild(a);
+			document.querySelector('ul#ips').appendChild(li);
 		}
 	}
 	
 }
 window.addEventListener("load", nsGhipUtil_load ,false);
+
+function createRow(name, value) {
+	var row = document.createElement('tr');
+	var col_name = document.createElement('td');
+	var col_value = document.createElement('td');
+
+	col_name.innerText = name;
+	col_value.innerText = value;
+
+	row.append(col_name, col_value);
+	return row;
+}
 
 function copyToClipboard(){
 	var copyFrom = document.createElement("textarea");
