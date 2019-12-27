@@ -1,20 +1,23 @@
 function nsGhipUtil_load(){
+	console.log("Loading Window...");
 	
 	var tabId = parseInt(window.location.hash.replace('#','')) ;
 	
 	var asn = chrome.extension.getBackgroundPage().asn[tabId]  ;
 
 	for (var i in asn ){
+		if (i === "undefined"){continue;}
+
 		var li = document.createElement('li');
 		var a = document.createElement('a');
+		var span = document.createElement('span');
+		a.classList.add("img-link");
 		a.href = 'https://bgp.he.net/AS'+asn[i].asn;
-		a.text = "AS" + asn[i].asn + ' ' + asn[i].asname;
-		var im = document.createElement('img');
-		im.src = "icons/clipboard.png";
-		im.data = {asn : asn[i].asn};
-		im.className="copy";
-		im.onclick = copyToClipboard ;
-		a.insertBefore(im, a.firstChild);
+		a.target = "_blank";
+
+		span.innerText = "AS" + asn[i].asn + ' ' + asn[i].asname;
+
+		a.appendChild(span)
 		li.appendChild(a);
 		document.querySelector('ul#asn').appendChild(li);
 	}
@@ -23,6 +26,7 @@ function nsGhipUtil_load(){
 	var ips = chrome.extension.getBackgroundPage().ipData[tabId]  ;
 	var prefix = chrome.extension.getBackgroundPage().prefix[tabId]  ;
 	for (var i in asn ){
+		if (i === "undefined"){continue;}
 
 		var li = document.createElement('li');
 		var table = document.createElement('table');
@@ -30,8 +34,8 @@ function nsGhipUtil_load(){
 
 		var as_id = createRow("AS", asn[i].asn);
 		var prefixes = createRow("Prefixes", asn[i].prefixes);
-		var as_name = createRow("AS Name", asn[i].asname);
-		var as_desc = createRow("AS Desc", asn[i].asdesc);
+		var as_name = createRow("Name", asn[i].asname);
+		var as_desc = createRow("Desc", asn[i].asdesc);
 		var country = createRow("Country", asn[i].country);
 		var rir = createRow("RIR", asn[i].rir);
 
@@ -48,11 +52,19 @@ function nsGhipUtil_load(){
 
 		for (var count in ips[asn[i].asn] ){
 			var li = document.createElement('li');
-			var a = document.createElement('div');
-			var text = document.createTextNode(ips[asn[i].asn][count].hostname + ' ('+ips[asn[i].asn][count]['type'].join(", ")+') : ' + count);
-			a.appendChild(text);
+			var div = document.createElement('div');
+			var span = document.createElement('span');
+			var br = document.createElement("br");
 
-			li.appendChild(a);
+			span.textContent = ips[asn[i].asn][count].hostname + ' ('+ips[asn[i].asn][count]['type'].join(", ")+'): ';
+			span.classList.add("asn-hostname");
+			div.appendChild(span);
+			div.appendChild(br);
+
+			var text = document.createTextNode(count);
+			div.appendChild(text);
+
+			li.appendChild(div);
 			document.querySelector('ul#ips').appendChild(li);
 		}
 	}
@@ -61,9 +73,14 @@ function nsGhipUtil_load(){
 window.addEventListener("load", nsGhipUtil_load ,false);
 
 function createRow(name, value) {
+	console.log("Loading ROW...");
+
 	var row = document.createElement('tr');
 	var col_name = document.createElement('td');
 	var col_value = document.createElement('td');
+
+	col_name.classList.add("col-name");
+	col_value.classList.add("col-value");
 
 	col_name.innerText = name;
 	col_value.innerText = value;
