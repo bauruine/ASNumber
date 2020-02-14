@@ -46,6 +46,10 @@ ul {
     overflow-y: scroll;
 }
 
+.container-no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
 .col {
     order: 0;
     width: 50%;
@@ -53,34 +57,20 @@ ul {
     align-self: auto;
 }
 
-.row {
-    order: 0;
-    flex: 1 5 auto;
-    align-self: auto;
+/*----------Connector-Canvas--------------------------*/
+.connector {
+    flex: 0 0 20px;
+    width: 20px;
 }
-
-.row-fix {
-    flex: 1 1 auto;
-    max-height: 50%;
-}
-
-.padding {
-    padding: 15px;
-}
-
-.delimiter-right {
-    border-right: #bbbbbb 1px solid;
-}
-
 
 /*----------AS Buttongroup----------------------------*/
 
-.background-gray {
-    background-color: #dddddd;
+.asn-links {
+    padding: 8px;
 }
 
-.shadow-bottom {
-    box-shadow: inset 0px -5px 15px -8px rgba(0,0,0,0.75);
+.background-gray {
+    background-color: #dddddd;
 }
 
 ul#asn {
@@ -88,7 +78,7 @@ ul#asn {
     border-radius: 3px;
 }
 
-/*-Copy Button-*/
+/*-ASN Link-*/
 
 a.img-link {
     vertical-align: baseline;
@@ -138,11 +128,15 @@ a.img-link > img:hover {
 }
 
 .asn-requests > ul > li {
-    margin-top: 5px;
+    padding: 5px 0px; /* 5 + 3 px = 8px = same as asn-details */
 }
 
-.asn-requests > ul > li:first-child {
-    margin-top: 0;
+.asn-requests > ul > li > ul > li {
+    padding: 3px 15px 3px 3px;
+}
+
+.asn-requests > ul > li:last-child > ul > li:last-child {
+    padding-bottom: 6px;
 }
 
 .asn-hostname {
@@ -152,11 +146,24 @@ a.img-link > img:hover {
 
 /*----------AS Details----------------------------*/
 
+table.asn-details {
+    border-collapse: collapse;
+    width: 100%;
+}
+
 .asn-details .col-name {
     width: 40px;
     font-size: 0.8em;
     text-align: right;
-    padding-right: 5px;
+    padding: 3px 5px;
+}
+
+.asn-details tr:first-child .col-name, .asn-details tr:first-child .col-value{
+    padding-top: 8px;
+}
+
+.asn-details tr:last-child .col-name, .asn-details tr:last-child .col-value {
+    padding-bottom: 8px;
 }
 
 .asn-details .col-value {

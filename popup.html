@@ -6,24 +6,21 @@
 </head>
 <body>
 <div class="content container-row">
-    <div class="col container-column delimiter-right">
-        <div class="row row-fix background-gray shadow-bottom container-scroll padding asn-links">
-            <ul id="asn">
+    <div class="col container-scroll padding background-gray asn-links">
+        <ul id="asn">
 
-            </ul>
-        </div>
-        <div class="row container-scroll padding asn-requests">
-            <ul id="ips">
-
-            </ul>
-        </div>
+        </ul>
     </div>
-    <div class="col padding container-scroll ">
-        <div>
-            <ul id="asns" class="asn-details">
+    <div class="col container-scroll container-no-scrollbar synced">
+        <table id="asns" class="asn-details">
 
-            </ul>
-        </div>
+        </table>
+    </div>
+    <canvas class="connector"></canvas>
+    <div class="col container-scroll synced asn-requests">
+        <ul id="ips">
+
+        </ul>
     </div>
 </div>
 
