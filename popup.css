@@ -142,6 +142,7 @@ a.img-link > img:hover {
 .asn-hostname {
     color: #333333;
     font-weight: bold;
+    word-break: break-word;
 }
 
 /*----------AS Details----------------------------*/
