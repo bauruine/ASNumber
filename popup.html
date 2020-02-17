@@ -1,60 +1,30 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
-    <style>
+    <link rel="stylesheet" type="text/css" href="popup.css">
+</head>
+<body>
+<div class="content container-row">
+    <div class="col container-scroll padding background-gray asn-links">
+        <ul id="asn">
 
+        </ul>
+    </div>
+    <div class="col container-scroll container-no-scrollbar synced">
+        <table id="asns" class="asn-details">
 
-html,body {
-	width: 620px;
-	padding:0;
-	font-family:arial;
-	font-size:15px;
-}
-body {margin: 0;text-size-adjust: 100%; }
-*, *::after, *::before {    box-sizing: border-box;}
+        </table>
+    </div>
+    <canvas class="connector"></canvas>
+    <div class="col container-scroll synced asn-requests">
+        <ul id="ips">
 
-a{ font-weight:500; text-decoration:none; display:block;color:#000; margin-bottom:5px; border-bottom:#EEE 1px solid}
-h1, h2 {
-  border-bottom: 1px solid;
-}
+        </ul>
+    </div>
+</div>
 
-img{ width:18px; cursor:pointer; margin-left:5px;}
-
-.flex {display: flex; flex-wrap: wrap;justify-content: center;}
-.flex > .col {flex: 1 1 0;text-align: center;display: flex;flex-direction: column;align-items: center;max-width: 380px;margin: 8px;}
-
-.flex a{font-size:12px;}
-
-.outer{ margin: 15px 15px; padding:0;}
-.header{ font-size:16px; border-bottom:1px solid #000;}
-.header .txt{font-size:24px;}
-.header #asn a{display: inline-block;}
-.header #asn img.copy{ float:left}
-
-</style>
-
-  </head>
-  <body>
-  <div class="outer">
-  <div style="float:right;" id="version"></div>
-	<div class="header">
-		<span class="txt">ASN: </br></span>
-		<span id="asn"></span>
-	</div>	
-  	
-	
-	<div class="flex">
-		<div class="col">
-			<h3>ASN</h3>
-			<div id="asns"></div>
-		</div>
-		<div class="col">
-			<h3>Requests</h3>
-			<div id="ips"></div>	
-		</div>
-	</div>
-	</div>
-	<script src="popup.js"></script>
-    </body>
+<div style="" id="version"></div>
+<script src="popup.js"></script>
+</body>
 </html>
