@@ -3,8 +3,8 @@
 
 function addIPtoTitle(responseDetails) {
 	
-	var tabId = responseDetails.tabId ;
-	if (responseDetails.type == "image"){
+	const tabId = responseDetails.tabId ;
+	if (responseDetails.type === "image"){
 		return ;
 	}
 
@@ -15,7 +15,7 @@ function addIPtoTitle(responseDetails) {
 		if (! prefix[tabId]) prefix[tabId] = {};
 		if (! processedIps[tabId]) processedIps[tabId] = {};
 
-		if(responseDetails.type == "main_frame"){
+		if(responseDetails.type === "main_frame"){
 			asn[tabId] = {} ;
 			ipData[tabId] = {};
 			prefix[tabId] = {};
@@ -23,7 +23,7 @@ function addIPtoTitle(responseDetails) {
 			processedIps[tabId] = {} ;
 		}
 
-		if (!(tabId == -1) && (!(responseDetails.ip in processedIps[tabId])) && responseDetails.ip) { 
+		if (!(tabId === -1) && (!(responseDetails.ip in processedIps[tabId])) && responseDetails.ip) {
 		      processedIps[tabId][responseDetails.ip] = true;
 			  const requestURL = "https://asnumber.tuxli.ch/asnumber/asnum?ip=" + responseDetails.ip;
 			  const driveRequest = new Request(requestURL, {
@@ -51,28 +51,28 @@ function addIPtoTitle(responseDetails) {
 					add_ips(responseDetails, processedIps, tabId);
 				});
 		}
-		else if (tabId != -1 && responseDetails.ip) {
+		else if (tabId !== -1 && responseDetails.ip) {
 			add_ips(responseDetails, processedIps, tabId);
 		}
 
   }
 }
 function add_ips(responseDetails, processedIps, tabId) {
-	if ( responseDetails.ip){ // not from cache 
-		var reqAsn = processedIps[tabId][responseDetails.ip];
-        parser = document.createElement('a');
-        parser.href = responseDetails.url;
-		hostname = parser.hostname
-		if (! ipData[tabId][reqAsn])  ipData[tabId][reqAsn] = {} ;
-		if (! ipData[tabId][reqAsn][responseDetails.ip]) {
+	let parser;
+	if (responseDetails.ip) { // not from cache
+		let reqAsn = processedIps[tabId][responseDetails.ip];
+		parser = document.createElement('a');
+		parser.href = responseDetails.url;
+		let hostname = parser.hostname
+		if (!ipData[tabId][reqAsn]) ipData[tabId][reqAsn] = {};
+		if (!ipData[tabId][reqAsn][responseDetails.ip]) {
 			console.log("adding " + responseDetails.ip + " with hostname: " + hostname + " to asn: " + reqAsn + " and tabId" + tabId)
 			ipData[tabId][reqAsn][responseDetails.ip] = {
 				"type": [responseDetails.type],
 				"hostname": hostname
 			}
-		}
-		else {
-			if (! ipData[tabId][reqAsn][responseDetails.ip]['type'].includes(responseDetails.type)) {
+		} else {
+			if (!ipData[tabId][reqAsn][responseDetails.ip]['type'].includes(responseDetails.type)) {
 				console.log("adding " + responseDetails.ip + " with hostname: " + hostname + " to asn: " + reqAsn + " and type " + responseDetails.type)
 				ipData[tabId][reqAsn][responseDetails.ip]['type'].push(responseDetails.type)
 			}
@@ -83,12 +83,9 @@ function add_ips(responseDetails, processedIps, tabId) {
 // define variables
 var ipData ={}; var asn ={}; var prefix = {}; var processedIps = {};
 
-//browser.tabs.onCreated.addListener((tab) => {  initArrays(tab.tabId);});
-//browser.tabs.onRemoved.addListener((tabId, removeInfo) => {  initArrays(tabId);});
-//browser.tabs.onActivated.addListener((activeInfo) => {  if (!newReq[activeInfo.tabId]) {    initArrays(activeInfo.tabId);  }});
-chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
 	
-  if (changeInfo.status == "complete") {	  
+  if (changeInfo.status === "complete") {
 	chrome.pageAction.setTitle({
 		tabId: tabId,title:"Show ASN"
 	});	
