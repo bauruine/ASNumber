@@ -4,6 +4,7 @@ function nsGhipUtil_load(){
 	
 	let asn = chrome.extension.getBackgroundPage().asn[tabId]  ;
 
+
 	for (let i in asn ){
 		let a = document.createElement('a');
 		let br = document.createElement('br');
@@ -66,9 +67,9 @@ function nsGhipUtil_load(){
 		docFragment.appendChild(br_7);
 
 		document.querySelector('#asns').appendChild(docFragment);
-		for (let count in ips[asn[i].asn] ){
+		for (let count in ips ){
 			let a = document.createElement('div');
-			let text_node = document.createTextNode(ips[asn[i].asn][count].hostname + ' ('+ips[asn[i].asn][count]['type'].join(", ")+') : ' + count);
+			let text_node = document.createTextNode(ips[count].hostname + ' ('+ips[count]['type'].join(", ")+') : ' + count);
 			a.appendChild(text_node)
 			document.querySelector('#ips').appendChild(a);
 		}

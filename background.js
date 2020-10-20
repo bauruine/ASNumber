@@ -60,21 +60,19 @@ function addIPtoTitle(responseDetails) {
 function add_ips(responseDetails, processedIps, tabId) {
 	let parser;
 	if (responseDetails.ip) { // not from cache
-		let reqAsn = processedIps[tabId][responseDetails.ip];
 		parser = document.createElement('a');
 		parser.href = responseDetails.url;
 		let hostname = parser.hostname
-		if (!ipData[tabId][reqAsn]) ipData[tabId][reqAsn] = {};
-		if (!ipData[tabId][reqAsn][responseDetails.ip]) {
-			console.log("adding " + responseDetails.ip + " with hostname: " + hostname + " to asn: " + reqAsn + " and tabId" + tabId)
-			ipData[tabId][reqAsn][responseDetails.ip] = {
+		let ip = responseDetails.ip;
+		if (!ipData[tabId][ip]) ipData[tabId][ip] = {};
+		if (!ipData[tabId][ip][ip]) {
+			ipData[tabId][ip] = {
 				"type": [responseDetails.type],
 				"hostname": hostname
 			}
 		} else {
-			if (!ipData[tabId][reqAsn][responseDetails.ip]['type'].includes(responseDetails.type)) {
-				console.log("adding " + responseDetails.ip + " with hostname: " + hostname + " to asn: " + reqAsn + " and type " + responseDetails.type)
-				ipData[tabId][reqAsn][responseDetails.ip]['type'].push(responseDetails.type)
+			if (!ipData[tabId][ip]['type'].includes(responseDetails.type)) {
+				ipData[tabId][ip]['type'].push(responseDetails.type)
 			}
 		}
 	}
