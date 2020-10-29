@@ -11,7 +11,7 @@
 		"default_title": "Show ASNumber",
 		"default_popup": "popup.html"
 	},
-	"permissions": ["tabs","webRequest","<all_urls>"],
+	"permissions": ["webRequest","<all_urls>"],
 	"background": {
 		"scripts": ["background.js"]
 	}
