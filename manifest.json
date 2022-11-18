@@ -11,8 +11,16 @@
 		"default_title": "Show ASNumber",
 		"default_popup": "popup.html"
 	},
-	"permissions": ["webRequest","<all_urls>"],
+	"permissions": ["webRequest","<all_urls>", "storage"],
 	"background": {
 		"scripts": ["background.js"]
+	},
+	"options_ui": {
+		"page": "options.html"
+	},
+	"browser_specific_settings": {
+		"gecko": {
+		  "id": "{5bca8a29-0f10-4755-a44a-081a96c0e796}"
+		}
 	}
 }
