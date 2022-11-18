@@ -4,7 +4,8 @@
 	"version": "0.5.1",
 	"description": "Show information about the source AS Number of all visited sites.",
 	"icons": {
-		"64": "icons/ip.png"
+		"64": "icons/ip.png",
+		"128": "icons/ip_128.png"
 	},  
 	"page_action": {		
 		"default_icon":  "icons/ip.png",
