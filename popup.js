@@ -15,8 +15,8 @@ const nsGhipUtil_load = async () => {
 		}
 		let ipData = chrome.extension.getBackgroundPage().ipData[tabId];
 		let asn = await getAsnDetails(ipData);
-		console.log(asn);
-		console.log(Object.keys(asn))
+		//console.log(asn);
+		//console.log(Object.keys(asn))
 
 		for (let i in asn) {
 			let a = document.createElement('a');
