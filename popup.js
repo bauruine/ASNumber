@@ -65,12 +65,13 @@ const nsGhipUtil_load = async () => {
 
 			let br_4 = document.createElement('BR');
 			docFragment.appendChild(br_4);
-			for (let p in [asn[i].prefix]) {
-				let text_5 = document.createTextNode("Prefix: " + asn[i].prefix[p]);
+			asn[i].prefix.forEach(prefix => {
+				console.log(`prefix ${asn[i].prefix}`)
+				let text_5 = document.createTextNode("Prefix: " + prefix);
 				docFragment.appendChild(text_5);
 				let br_5 = document.createElement('BR');
 				docFragment.appendChild(br_5);
-			}
+			});
 			let br_6 = document.createElement('BR');
 			docFragment.appendChild(br_6);
 			let br_7 = document.createElement('div')
@@ -100,13 +101,15 @@ async function getAsnDetails(ipData) {
         const requestURL = "https://asnumber.tuxli.ch/asnumber/asnum?ip=" + ip;
         const response = await fetch(requestURL);
         const json = await response.json();
-        asn[json.asn] = {
-            "asn": json.asn,
-            "prefixes": json.prefixes,
-            "asname": json.asname,
-            "asdesc": json.asdesc,
-            "country": json.country,
-            "rir": json.rir,
+        if (!asn.hasOwnProperty(json.asn)) {
+          asn[json.asn] = {
+              "asn": json.asn,
+              "prefixes": json.prefixes,
+              "asname": json.asname,
+              "asdesc": json.asdesc,
+              "country": json.country,
+              "rir": json.rir,
+          };
         };
 
         if (!asn[json.asn]['prefix']) {
